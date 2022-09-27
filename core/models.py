@@ -3,14 +3,43 @@ from django.contrib.auth import get_user_model
 import uuid
 from datetime import datetime
 from django_countries.fields import CountryField
+from multiselectfield import MultiSelectField
 
 
 User = get_user_model()
 
-CATEGORY_CHOICES = (
-    ('s', 'Shirt '),
-    ('sw', 'Sport wear'),
-    ('ow', 'Outwear')
+SALE_CHOICES = (
+    ('S', 'Sport'),
+    ('lX', 'Luxury'),
+)
+GENDER_CHOICES = (
+    ('M', 'Male'),
+    ('F', 'Female'),
+)
+WEAR_CHOICES = (
+    ('Dr', 'Dress'),
+    ('Sh', 'Shoe'),
+)
+ACCESSORY_CHOICES = (
+    ('w', 'Watch'),
+    ('B', 'Bag'),
+    ('GL', 'Glass'),
+)
+
+PRODUCT_COLOUR = (
+    ('Pink', 'Pink'),
+    ('BLue', 'Blue'),
+    ('Gold', 'Gold'),
+    ('Black', 'Black'),
+    ('Red', 'Red'),
+    ('Orange', 'Orange'),
+)
+
+PRODUCT_SIZE = (
+    ('S', 'S'),
+    ('M', 'M'),
+    ('L', 'L'),
+    ('XL', 'XL'),
 )
 
 
@@ -18,11 +47,16 @@ class Product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=100)
     price = models.FloatField()
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     description = models.TextField()
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
+    sale_type = models.CharField(choices=SALE_CHOICES, max_length=2)
+    accessory_type = models.CharField(choices=ACCESSORY_CHOICES, max_length=2, blank=True)
+    colour = MultiSelectField(choices=PRODUCT_COLOUR, max_length=31)
+    size = MultiSelectField(choices=PRODUCT_SIZE, max_length=10)
+    
       
     def __str__(self):
-        return self.title
+        return self.name
     
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='image', on_delete=models.CASCADE)
@@ -34,6 +68,8 @@ class OrderedProduct(models.Model):
                              on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    size = models.CharField(max_length=4,)
+    colour = models.CharField(max_length=10, default='Black')
     ordered = models.BooleanField(default=False)
  
     def __str__(self):

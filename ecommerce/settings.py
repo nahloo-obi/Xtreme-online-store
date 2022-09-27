@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ecommerce',
+    'core',
     
-    'django_countries'
+    'django_countries',
+    'multiselectfield'
 ]
 
 MIDDLEWARE = [

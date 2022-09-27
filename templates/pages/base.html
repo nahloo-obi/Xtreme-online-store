@@ -2,10 +2,33 @@
 <html lang="en">
 {% include "pages/head.html" %}
 <body>
+
+    
+  
+
+    
+
+    <div>
+        {% if messages %}
+        <style>
+        h5{
+            color:red
+        }
+        </style>
+        {% for message in messages %}
+        <h5>{{message}}</h5>
+        {% endfor %}
+        {% endif %}
+    </div>
+  
+  
+
+
     {% block content %}
 
     {% endblock content %}
 
+    {% include "pages/footer.html" %}
     {% include "pages/scripts.html" %}
 </body>
 </html>
