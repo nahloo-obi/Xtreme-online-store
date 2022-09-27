@@ -99,10 +99,8 @@ class Order(models.Model):
     def get_total(self):
         total = 0
         for order_product in self.products.all():
-            total += order_product.get_final_price()
-        
-        if self.coupon:
-            total -= self.coupon.amount          
+            total += order_product.get_total_item_price()
+             
         return total
 
 

@@ -1,0 +1,102 @@
+{% extends "basee.html" %}
+
+{% block content %}
+
+  <main >
+    <div class="container wow fadeIn">
+
+      <h2 class="my-5 h2 text-center">Payment</h2>
+
+      <div class="row">
+
+        <div class="col-md-8 mb-4">
+          <div class="card">
+            <div id="paypal-button-container"></div>
+
+          </div>
+        </div>
+
+       {% include "order_snippet.html "%}
+
+      </div>
+
+    </div>
+  </main>
+<script
+   src="https://www.paypal.com/sdk/js?client-id=ATsY1PK1ljNYnEWYh-slaOtwy7OFCKmTakl5fr4HZLMqrjydM8cXZM0-1aiU9a989BMRMabQr7mFUoSL&currency=USD">
+</script>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+    var url = "{% url 'core:payment_complete' %}"
+
+
+    function initPaypalBtn(){
+        paypal.Buttons({
+            style: {
+                shape: 'rect',
+                color: 'gold',
+                layout: 'vertical',
+                label: 'paypal'
+
+            },
+
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                amount: {
+                    value: '{{ order.get_total }}'// Can also reference a variable or function
+                }
+                }]
+            });
+            },
+
+           
+              onApprove: (data, actions) => {
+                return actions.order.capture().then(function(orderData) {
+                    sendData();
+                    function sendData() {
+                        fetch(url, {
+                          method: "POST",
+                          headers: {
+                            "Content-type": "application/json",
+                            "X-CSRFToken": csrftoken,
+                          },
+                          body: JSON.stringify({ 
+                            'order_id': orderData.id, 
+                            'payment_id': orderData.payer.payer_id, 
+                            'status': orderData.status }),
+                        });
+                      }
+                      window.location.href = "{% url 'core:order-summary' %}";
+                      alert(
+                        "Transaction completed your payment ID is: " + orderData.id + "!"
+                      );
+                });
+              }
+        
+              
+             
+        }).render('#paypal-button-container');
+    }
+
+    initPaypalBtn();
+
+  </script>
+
+{% endblock content %}
