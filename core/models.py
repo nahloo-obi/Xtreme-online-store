@@ -43,6 +43,12 @@ PRODUCT_SIZE = (
 )
 
 
+DELIVERY_CHOICES = [
+    ("IS", "In Store"),
+    ("HD", "Home Delivery"),
+    ("DD", "Digital Delivery"),
+]
+
 class Product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=100)
@@ -83,6 +89,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, 
                              on_delete=models.CASCADE)
     products = models.ManyToManyField(OrderedProduct)
+    ref_number = models.CharField(max_length=20, blank=True)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
@@ -92,6 +99,7 @@ class Order(models.Model):
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
+    delivery_option = models.ForeignKey('DeliveryOption', on_delete=models.SET_NULL, blank=True, null=True)
     
     def __str__(self):
         return self.user.username
@@ -100,7 +108,10 @@ class Order(models.Model):
         total = 0
         for order_product in self.products.all():
             total += order_product.get_total_item_price()
-             
+            
+        if self.delivery_option:
+            total += self.delivery_option.delivery_price
+                      
         return total
 
 
@@ -113,11 +124,21 @@ class Address(models.Model):
     zip = models.CharField(max_length=100)
     
     def __str__(self):
-        return self.user.username
+        return self.street_address
     
     class Meta:
         verbose_name_plural = 'Addresses'
+        
+
+class DeliveryOption(models.Model):
+    delivery_name = models.CharField(max_length=255,)
+    delivery_price = models.FloatField()
+    delivery_method = models.CharField(choices=DELIVERY_CHOICES, max_length=255,)
+    delivery_timeframe = models.CharField(max_length=255)
     
+    def __str__(self):
+        return self.delivery_name
+       
     
 class Payment(models.Model):
     paypal_id = models.CharField(max_length=50)

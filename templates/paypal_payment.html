@@ -1,6 +1,8 @@
-{% extends "basee.html" %}
+{% extends "pages/base.html" %}
 
 {% block content %}
+
+    {%include 'pages/navbar.html'%}
 
   <main >
     <div class="container wow fadeIn">
@@ -9,6 +11,8 @@
 
       <div class="row">
 
+        {% include "order_snippet.html "%}
+
         <div class="col-md-8 mb-4">
           <div class="card">
             <div id="paypal-button-container"></div>
@@ -16,15 +20,16 @@
           </div>
         </div>
 
-       {% include "order_snippet.html "%}
+       
 
       </div>
 
     </div>
   </main>
 <script
-   src="https://www.paypal.com/sdk/js?client-id=ATsY1PK1ljNYnEWYh-slaOtwy7OFCKmTakl5fr4HZLMqrjydM8cXZM0-1aiU9a989BMRMabQr7mFUoSL&currency=USD">
+   src="https://www.paypal.com/sdk/js?client-id={{PAYPAL_CLIENT_ID}}&currency=USD">
 </script>
+
 
 <script>
     function getCookie(name) {
@@ -43,29 +48,30 @@
         return cookieValue;
     }
     const csrftoken = getCookie('csrftoken');
-    var url = "{% url 'core:payment_complete' %}"
+    var url = "{% url 'payment_complete' %}"
 
 
     function initPaypalBtn(){
+
         paypal.Buttons({
             style: {
                 shape: 'rect',
                 color: 'gold',
                 layout: 'vertical',
                 label: 'paypal'
-
+        
             },
-
+        
         createOrder: (data, actions) => {
             return actions.order.create({
                 purchase_units: [{
                 amount: {
-                    value: '{{ order.get_total }}'// Can also reference a variable or function
+                    value: '{{order.get_total}}'// Can also reference a variable or function
                 }
                 }]
             });
             },
-
+        
            
               onApprove: (data, actions) => {
                 return actions.order.capture().then(function(orderData) {
@@ -80,10 +86,13 @@
                           body: JSON.stringify({ 
                             'order_id': orderData.id, 
                             'payment_id': orderData.payer.payer_id, 
-                            'status': orderData.status }),
+                            'status': orderData.status,
+                            'amount': '{{order.get_total}}'
+                         }),
+
                         });
                       }
-                      window.location.href = "{% url 'core:order-summary' %}";
+                      window.location.href = "";
                       alert(
                         "Transaction completed your payment ID is: " + orderData.id + "!"
                       );
