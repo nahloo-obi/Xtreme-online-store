@@ -59,6 +59,7 @@ class Product(models.Model):
     accessory_type = models.CharField(choices=ACCESSORY_CHOICES, max_length=2, blank=True)
     colour = MultiSelectField(choices=PRODUCT_COLOUR, max_length=31)
     size = MultiSelectField(choices=PRODUCT_SIZE, max_length=10)
+    is_featured = models.BooleanField(default=False)
     
       
     def __str__(self):

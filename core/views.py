@@ -8,9 +8,16 @@ from django.core.exceptions import ObjectDoesNotExist
 import random
 import string
 from .forms import CheckoutForm
+from django.views.generic import View, ListView, DetailView
+
+from django.contrib.auth.decorators import login_required
+
+
 
 import json
 from django.http import HttpResponseRedirect, JsonResponse
+
+from django.contrib.auth.models import User, auth
 
 from django.conf import settings
 
@@ -71,6 +78,8 @@ def womenPage(request):
     
     return render(request, 'shop.html', context)
 
+
+@login_required(login_url='signin')
 def cartPage(request, pk):
     product = Product.objects.get(id = pk)
     
@@ -88,8 +97,6 @@ def form_validation(values):
             valid = False
     return valid
 
-def create_ref_code():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, K=20))
 
 def add_to_cart(request, pk):
     product = Product.objects.get(id=pk)
@@ -206,7 +213,7 @@ def remove_singleQuantity_from_product(request, pk, colour, size):
         messages.info(request, "Your don't have an order")
         return redirect('/')
       
-        
+@login_required(login_url='signin')      
 def orderSummaryPage(request):
     try:
         order = Order.objects.get(user = request.user, ordered = False)
@@ -220,7 +227,7 @@ def orderSummaryPage(request):
         messages.info(request, "You do not have an active order")
         return redirect("/")
 
-    
+@login_required(login_url='signin')    
 def checkoutPage(request):
     try:
         order = Order.objects.get(user = request.user, ordered= False)
@@ -264,27 +271,23 @@ def checkoutPage(request):
     except ObjectDoesNotExist:
         messages.info(request, "You do not have an active order to proceed to checkout")
         return redirect ('/')    
-    
+   
+@login_required(login_url='signin')  
 def paymentPage(request):
     try:
         order = Order.objects.get(user=request.user, ordered=False)
-        context ={
+        if order.delivery_option and order.shipping_address:
+            context ={
                 'order': order,
                 'PAYPAL_CLIENT_ID': settings.PAYPAL_CLIENT_ID
-            }
-        print(settings.PAYPAL_CLIENT_ID)
-        return render(request, 'paypal_payment.html', context)
-        '''if order.delivery_option and order.shipping_address:
-            context ={
-                'order': order
             }
             
             return render(request, 'paypal_payment.html', context)
         else:
             messages.info(request, "You haven't checked out")
-            return redirect('/')'''
+            return redirect('/')
     except ObjectDoesNotExist:
-        messages.info(request, "You do not have an active order to proceed to checkout")
+        messages.info(request, "You do not have an active order to proceed to payment")
         return redirect('/')
 
 def payment_complete(request):  
@@ -323,3 +326,55 @@ def payment_complete(request):
     
     
     return JsonResponse("Payment completed", safe=False)
+
+
+class SignupPage(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, 'signup.html')
+        
+        
+    def post(self, *args, **kwargs):
+        username = self.request.POST['username']  
+        email = self.request.POST['email']
+        password = self.request.POST['password']
+        password2 = self.request.POST['password2']
+        
+        if password == password2:
+            if User.objects.filter(email=email).exists():
+                messages.info(self.request, "Email Taken")
+                return redirect('signup')
+            elif User.objects.filter(username=username).exists():
+                messages.info(self.request, "Username taken")
+                return redirect('signup')
+            else:
+                user = User.objects.create_user(username=username, email=email, password=password)
+                user.save()
+                
+                user_login = auth.authenticate(username=username, password=password)
+                auth.login(self.request, user_login)                
+                return redirect('/')
+        else:
+            messages.info(self.request, "password doesnt match")
+            return redirect('signup')
+        
+class SigninPage(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, 'signin.html')
+        
+    def post(self, *args, **kwargs):
+        username = self.request.POST['username']
+        password = self.request.POST['password']
+        
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(self.request, user)
+            return redirect('/')
+        else:
+            messages.info(self.request, "Invalid Credentials")
+            return redirect('signin')
+            
+
+@login_required(login_url='signin')
+def logout(request):
+    auth.logout(request)
+    return redirect('signin')
