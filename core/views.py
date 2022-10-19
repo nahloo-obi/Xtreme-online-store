@@ -20,11 +20,17 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User, auth
 
 from django.conf import settings
+import random
 
 
 def index(request):
+    featured_products = Product.objects.filter(is_featured = True)[0:3]
+   
+    context = {
+        "product" : featured_products
+    }
     
-    return render(request, 'index.html')
+    return render(request, 'index.html', context)
 
 def shopPage(request):
     product = Product.objects.all()
@@ -42,9 +48,10 @@ def shopPage(request):
     }
     
     return render(request, 'shop.html', context)
-
-def menPage(request):
-    product = Product.objects.filter(gender='M')
+    
+   
+def genderFilterPage(request, gender):
+    product = Product.objects.filter(gender=gender)
     page = request.GET.get('page')
     paginator = Paginator(product, 6)
     try:
@@ -59,10 +66,9 @@ def menPage(request):
     }
     
     return render(request, 'shop.html', context)
-    
-   
-def womenPage(request):
-    product = Product.objects.filter(gender='F')
+
+def productFilter(request, gender):
+    product = Product.objects.filter(gender=gender)
     page = request.GET.get('page')
     paginator = Paginator(product, 6)
     try:
