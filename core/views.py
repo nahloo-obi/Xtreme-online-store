@@ -24,16 +24,20 @@ import random
 
 
 def index(request):
-    featured_products = Product.objects.filter(is_featured = True)[0:3]
+    featured_products = list(Product.objects.filter(is_featured = True))
+    product = random.sample(featured_products, 3)
    
     context = {
-        "product" : featured_products
+        "product" : product
     }
     
     return render(request, 'index.html', context)
 
 def shopPage(request):
-    product = Product.objects.all()
+    products = list(Product.objects.all())
+    count = len(products)
+    product = random.sample(products, count)
+    
     page = request.GET.get('page')
     paginator = Paginator(product, 6)
     try:
@@ -51,7 +55,10 @@ def shopPage(request):
     
    
 def genderFilterPage(request, gender):
-    product = Product.objects.filter(gender=gender)
+    if gender =="Male":
+        product = Product.objects.filter(gender="M")
+    else:
+        product = Product.objects.filter(gender="F")
     page = request.GET.get('page')
     paginator = Paginator(product, 6)
     try:
@@ -67,8 +74,37 @@ def genderFilterPage(request, gender):
     
     return render(request, 'shop.html', context)
 
-def productFilter(request, gender):
-    product = Product.objects.filter(gender=gender)
+def productSaleFilter(request, sale):
+    if sale =="Sport":
+        product = Product.objects.filter(sale_type="S")
+    else:
+        product = Product.objects.filter(sale_type="lX")
+
+        
+    page = request.GET.get('page')
+    paginator = Paginator(product, 6)
+    try:
+        product = paginator.page(page)
+    except PageNotAnInteger:
+        product = paginator.page(1)
+    except EmptyPage:
+        product = paginator.page(paginator.num_pages)
+    context = {
+        'product': product,
+        'page': page
+    }
+    
+    return render(request, 'shop.html', context)
+
+def Filter(request, sale):
+    if sale =="Mensport":
+        product = Product.objects.filter(gender="M", sale_type="S" )
+    elif sale =="Womensport":
+        product = Product.objects.filter(gender="F",sale_type="S")
+    elif sale =="MenLuxury":
+        product = Product.objects.filter(gender="M", sale_type="lX")
+    else:
+        product = Product.objects.filter(gender="F", sale_type="lX")
     page = request.GET.get('page')
     paginator = Paginator(product, 6)
     try:

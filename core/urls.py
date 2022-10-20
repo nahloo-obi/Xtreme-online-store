@@ -6,6 +6,10 @@ urlpatterns = [
     path('', views.index, name="index"), 
     path('shop-page', views.shopPage, name='shop-page'),
     path('gender-filter-page/<str:gender>', views.genderFilterPage, name='gender-filter-page'),
+    path('sale-filter-page/<str:sale>', views.productSaleFilter, name='sale-filter-page'),
+    
+    path('filter-page/<str:sale>/', views.Filter, name='filter-page'),
+
     path('cart-page/<str:pk>', views.cartPage, name='cart-page'),
     path('add-to-cart/<str:pk>', views.add_to_cart, name='add-to-cart'),
     path('remove-from-cart/<str:pk>/<str:size>/<str:colour>', views.remove_from_cart, name='remove-from-cart'),
