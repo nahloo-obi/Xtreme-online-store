@@ -115,7 +115,29 @@
         </div>
     </section>
     <!-- Close Content -->
-    
+    {%if similar_post%}
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <h3>You can check out these similar products</h3>
+        </div>
+    </div>
+    <div class="row">
+    {%endif%}
+
+        {% for product in similar_post %}
+        <div class="col-lg-4 col-md-6 col-sl-12 p-3">
+            <div class="border">
+                    <img src="{{product.image.first.image.url}}" class="" alt="" style="max-width:200px;max-height:200px">
+                <small class="text-primary mt-2 p-4">{{product.name}}</small>
+                <p class="p-4">{{product.description|safe|slice:":150"}}<b>[...]</b></p>
+                <a href="/product-page/{{product.id}}" class="p-4" style="text-decoration:none">View Product<i class="mdi mdi-cheveron-right"></i></a>
+                
+            </div>
+        </div>
+        {% endfor %}
+        
+    </div>
+
     <div class="section">
         <div class="container">
             <h2>Reviews({{product_reviews_count}})</h2>

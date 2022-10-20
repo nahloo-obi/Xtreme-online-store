@@ -155,23 +155,23 @@ def add_to_cart(request, pk):
                     ordered_product.quantity += int(quantity)
                     ordered_product.save()
                     messages.info(request, "this item was updated to your cart")
-                    return redirect('cart-page', pk = pk)
+                    return redirect('product-page', pk = pk)
                     
                 else: 
                     ordered_product.quantity = quantity
                     ordered_product.save()
                     order.products.add(ordered_product)
                     messages.info(request, "this item was added to your cart")
-                    return redirect('cart-page', pk = pk)
+                    return redirect('product-page', pk = pk)
             else:
                 ordered_date = timezone.now()
                 order = Order.objects.create(user=request.user, ordered_date=ordered_date)
                 order.products.add(ordered_product)
                 messages.info(request, "this item was added to your cart")
-                return redirect('cart-page', pk = pk)
+                return redirect('product-page', pk = pk)
         else:
             messages.info(request, "Please select all fields")
-            return redirect('cart-page', pk = pk)
+            return redirect('product-page', pk = pk)
         
 
 def remove_from_cart(request, pk, colour, size):
@@ -380,13 +380,13 @@ class ProductDetailView(DetailView):
             }))
             
     def get_context_data(self, **kwargs):
-       # similar_post = self.object.tags.similar_objects()[:3]
+        similar_post = self.object.tags.similar_objects()[:3]
         product_review = ProductReview.objects.all().filter(product=self.object.id)
         product_review_count = ProductReview.objects.all().filter(product=self.object.id).count()
         product = self.get_object()
         context = super().get_context_data(**kwargs)
         context.update({
-           # "similar_post": similar_post,
+            "similar_post": similar_post,
             'form':self.form,
             "product_review":product_review,
             "product": product,
