@@ -1,31 +1,32 @@
 from itertools import product
-from django.shortcuts import render, redirect
-from .models import DeliveryOption, Product, ProductImage, Order, OrderedProduct, Address, Payment
+from django.shortcuts import render, redirect, reverse
+from .models import DeliveryOption, Product, ProductImage, Order, OrderedProduct, Address, Payment, ProductReview
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import timezone
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 import random
 import string
-from .forms import CheckoutForm
+from .forms import CheckoutForm, ReviewForm
 from django.views.generic import View, ListView, DetailView
 
 from django.contrib.auth.decorators import login_required
-
-
-
 import json
 from django.http import HttpResponseRedirect, JsonResponse
-
 from django.contrib.auth.models import User, auth
 
 from django.conf import settings
 import random
+from hitcount.views import HitCountDetailView
+
 
 
 def index(request):
     featured_products = list(Product.objects.filter(is_featured = True))
-    product = random.sample(featured_products, 3)
+    if len(featured_products) >3:
+        product = random.sample(featured_products, 3)
+    else:
+        product = Product.objects.filter(is_featured = True)
    
     context = {
         "product" : product
@@ -119,17 +120,6 @@ def Filter(request, sale):
     }
     
     return render(request, 'shop.html', context)
-
-
-@login_required(login_url='signin')
-def cartPage(request, pk):
-    product = Product.objects.get(id = pk)
-    
-    context={
-        'product':product
-    }
-
-    return render(request, 'shop-single.html', context)
 
 
 def form_validation(values):
@@ -368,6 +358,43 @@ def payment_complete(request):
     
     
     return JsonResponse("Payment completed", safe=False)
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "shop-single.html"
+    #count_hit = True
+    
+    form = ReviewForm()
+    
+    def post(self, request, *args, **kwargs):
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            product = self.get_object()
+            form.instance.user = request.user
+            form.instance.product = product
+            form.save()
+            
+            return redirect(reverse("product-page", kwargs={
+                'pk':product.id
+            }))
+            
+    def get_context_data(self, **kwargs):
+       # similar_post = self.object.tags.similar_objects()[:3]
+        product_review = ProductReview.objects.all().filter(product=self.object.id)
+        product_review_count = ProductReview.objects.all().filter(product=self.object.id).count()
+        product = self.get_object()
+        context = super().get_context_data(**kwargs)
+        context.update({
+           # "similar_post": similar_post,
+            'form':self.form,
+            "product_review":product_review,
+            "product": product,
+            'product_reviews_count': product_review_count
+        })
+        
+        return context
+    
 
 
 class SignupPage(View):

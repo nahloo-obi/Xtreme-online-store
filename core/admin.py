@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Order, OrderedProduct, ProductImage, DeliveryOption, Address, Payment
+from .models import Product, Order, OrderedProduct, ProductImage, DeliveryOption, Address, Payment, ProductReview
 
 class ProductImage(admin.StackedInline):
     model = ProductImage
@@ -13,6 +13,7 @@ admin.site.register(OrderedProduct)
 admin.site.register(DeliveryOption)
 admin.site.register(Address)
 admin.site.register(Payment)
+admin.site.register(ProductReview)
 
 
 

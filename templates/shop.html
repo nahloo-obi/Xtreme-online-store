@@ -61,14 +61,14 @@
                                 <img class="card-img rounded-0 img-fluid" src="{{products.image.first.image.url}}">
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                     <ul class="list-unstyled">
-                                        <li><a class="btn btn-success text-white mt-2" href="/cart-page/{{products.id}}"><i class="fas fa-cart-plus"></i></a></li>
+                                        <li><a class="btn btn-success text-white mt-2" href="/product-page/{{products.id}}"><i class="fas fa-cart-plus"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <a href="shop-single.html" class="h3 text-decoration-none">{{products.name}}</a>
+                                <a href="/product-page/{{products.id}}" class="h3 text-decoration-none">{{products.name}}</a>
                                 <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                    <li>M/L/X/XL</li>
+                                    <li>No of Reviews: {{products.productReview.count}}</li>
     
                                 </ul>
                                 <p class="text-center mb-0">${{products.price}}</p>

@@ -115,6 +115,42 @@
         </div>
     </section>
     <!-- Close Content -->
+    
+    <div class="section">
+        <div class="container">
+            <h2>Reviews({{product_reviews_count}})</h2>
+            <div class="col-lg-8 mx-auto">
+               
+                <div class="media-list">
+                    {% for review in product_review%}
+                    <div>
+                        <img class="avatar avatar-sm mr-4" src="https://cdn.pixabay.com/photo/2014/04/03/10/32/businessman-310819__340.png" height="30" width="30">
+
+                        <div class="media-body">
+                            <div class="small-1">
+                                <b>{{review.user}} </b>
+                                <time class="ml-4 opacity-70 small-3">{{review.date}}</time>
+                            </div>
+                            <p>{{review.content}} </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                   
+
+                </div>
+       
+
+                <form method="POST" action="{% url 'product-page' product.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{form}}
+                    </div>
+                    <button class="btn btn-primary btn-block" type="submit">Submit Review</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 </body>
 

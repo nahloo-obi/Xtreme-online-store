@@ -4,6 +4,11 @@ import uuid
 from datetime import datetime
 from django_countries.fields import CountryField
 from multiselectfield import MultiSelectField
+from django.utils.translation import gettext_lazy as _
+from taggit.managers import TaggableManager
+from taggit.models import GenericUUIDTaggedItemBase, TaggedItemBase
+
+
 
 
 User = get_user_model()
@@ -49,6 +54,12 @@ DELIVERY_CHOICES = [
     ("DD", "Digital Delivery"),
 ]
 
+class UUIDTaggedItem(GenericUUIDTaggedItemBase, TaggedItemBase):
+
+    class Meta:
+        verbose_name = _("Tag")
+        verbose_name_plural = _("Tags")
+
 class Product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=100)
@@ -60,6 +71,8 @@ class Product(models.Model):
     colour = MultiSelectField(choices=PRODUCT_COLOUR, max_length=31)
     size = MultiSelectField(choices=PRODUCT_SIZE, max_length=10)
     is_featured = models.BooleanField(default=False)
+    tags = TaggableManager(through=UUIDTaggedItem)
+
     
       
     def __str__(self):
@@ -69,6 +82,14 @@ class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='image', on_delete=models.CASCADE)
     image = models.ImageField()
         
+class ProductReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name="productReview")
+    content = models.TextField()
+    
+    def __str__(self):
+        return self.user.username
 
 class OrderedProduct(models.Model):
     user = models.ForeignKey(User, 

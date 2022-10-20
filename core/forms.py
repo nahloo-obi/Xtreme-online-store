@@ -1,6 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
+from .models import ProductReview
 
 
 
@@ -19,3 +20,14 @@ class RefundForm(forms.Form):
         'rows': 4
     }))
     email = forms.EmailField()
+    
+class ReviewForm(forms.ModelForm):
+    content = forms.CharField(widget=forms.Textarea(attrs={
+        "class": 'md-textarea form-control',
+        'placeholder': 'comment here',
+        "rows": 4
+    }))
+    
+    class Meta:
+        model = ProductReview
+        fields = ('content',)
