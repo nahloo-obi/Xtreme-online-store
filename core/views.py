@@ -18,6 +18,7 @@ from django.contrib.auth.models import User, auth
 from django.conf import settings
 import random
 from hitcount.views import HitCountDetailView
+from .filters import Productfilters
 
 
 
@@ -34,6 +35,7 @@ def index(request):
     
     return render(request, 'index.html', context)
 
+""" 
 def shopPage(request):
     products = list(Product.objects.all())
     count = len(products)
@@ -53,6 +55,27 @@ def shopPage(request):
     }
     
     return render(request, 'shop.html', context)
+"""
+
+def shopPage(request):
+    products = Product.objects.all().order_by('id')
+    product = Productfilters(request.GET, queryset=products)
+    
+    page = request.GET.get('page')
+    paginator = Paginator(product.qs, 6)
+    try:
+        response = paginator.page(page)
+    except PageNotAnInteger:
+        response = paginator.page(1)
+    except EmptyPage:
+        response = paginator.page(paginator.num_pages)
+    context = {
+        'product': response,
+        'page': page,
+        'product_filter' : product
+    }
+    
+    return render(request, 'shop.html', context)
     
    
 def genderFilterPage(request, gender):
@@ -60,63 +83,19 @@ def genderFilterPage(request, gender):
         product = Product.objects.filter(gender="M")
     else:
         product = Product.objects.filter(gender="F")
+    products = Productfilters(request.GET, queryset=product)
     page = request.GET.get('page')
-    paginator = Paginator(product, 6)
+    paginator = Paginator(products.qs, 6)
     try:
-        product = paginator.page(page)
+        response = paginator.page(page)
     except PageNotAnInteger:
-        product = paginator.page(1)
+        response = paginator.page(1)
     except EmptyPage:
-        product = paginator.page(paginator.num_pages)
+        response = paginator.page(paginator.num_pages)
     context = {
-        'product': product,
-        'page': page
-    }
-    
-    return render(request, 'shop.html', context)
-
-def productSaleFilter(request, sale):
-    if sale =="Sport":
-        product = Product.objects.filter(sale_type="S")
-    else:
-        product = Product.objects.filter(sale_type="lX")
-
-        
-    page = request.GET.get('page')
-    paginator = Paginator(product, 6)
-    try:
-        product = paginator.page(page)
-    except PageNotAnInteger:
-        product = paginator.page(1)
-    except EmptyPage:
-        product = paginator.page(paginator.num_pages)
-    context = {
-        'product': product,
-        'page': page
-    }
-    
-    return render(request, 'shop.html', context)
-
-def Filter(request, sale):
-    if sale =="Mensport":
-        product = Product.objects.filter(gender="M", sale_type="S" )
-    elif sale =="Womensport":
-        product = Product.objects.filter(gender="F",sale_type="S")
-    elif sale =="MenLuxury":
-        product = Product.objects.filter(gender="M", sale_type="lX")
-    else:
-        product = Product.objects.filter(gender="F", sale_type="lX")
-    page = request.GET.get('page')
-    paginator = Paginator(product, 6)
-    try:
-        product = paginator.page(page)
-    except PageNotAnInteger:
-        product = paginator.page(1)
-    except EmptyPage:
-        product = paginator.page(paginator.num_pages)
-    context = {
-        'product': product,
-        'page': page
+        'product': response,
+        'page': page,
+        'product_filter' : products
     }
     
     return render(request, 'shop.html', context)
