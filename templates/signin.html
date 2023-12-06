@@ -1,6 +1,10 @@
-{% load static %}
 
-<head>
+{% extends 'pages/base.html' %}
+{%load static %}
+
+{% block content %}
+
+<!-- <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
@@ -12,14 +16,14 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
 
-</head>
+</head> -->
 
 <body class="bg-gray-100">
-
+    {%  include  'pages/navbar.html' %}
 
     <div id="wrapper" class="flex flex-col justify-between h-screen">
 
-        <!-- header-->
+        <!-- header
         <div class="bg-white py-4 shadow dark:bg-gray-800">
             <div class="max-w-6xl mx-auto">
 
@@ -37,7 +41,7 @@
 
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Content-->
         <div>
@@ -80,5 +84,5 @@
 
 
 </body>
-
+{%endblock content%}
 

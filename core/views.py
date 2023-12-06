@@ -310,6 +310,7 @@ def payment_complete(request):
     amount = body["amount"]
     user = request.user
     
+    print("hey")
     print(orderId)
     print(paymentId)
     print(status)
