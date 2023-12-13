@@ -9,7 +9,8 @@ mkdir -p /media
 mkdir -p /vol
 
 # Set correct permissions
-chown -R app:app /app/staticfiles /static /media /vol
+chown -R app:app /app/staticfiles /static /media /vol || echo "Failed to change ownership. Check user permissions and volume mounts."
+
 
 python manage.py wait_for_db
 python manage.py collectstatic --noinput
