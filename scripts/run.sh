@@ -3,13 +3,10 @@
 set -e
 
 # Create necessary directories
-mkdir -p /app/staticfiles
-mkdir -p /static
-mkdir -p /media
-mkdir -p /vol
-
-# Set correct permissions
-chown -R app:app /app/staticfiles /static /media /vol || echo "Failed to change ownership. Check user permissions and volume mounts."
+# mkdir -p /app/staticfiles
+# mkdir -p /static
+# mkdir -p /media
+# mkdir -p /vol
 
 
 python manage.py wait_for_db
