@@ -19,12 +19,11 @@ RUN python -m venv /py && \
     /py/bin/pip install -r requirements.txt && \
     apk del .tmp-deps && \
     adduser --disabled-password --no-create-home app && \
-    # mkdir -p /static && \
-    # mkdir -p /media && \
-    # mkdir -p /vol && \
-    # chown -R app:app /vol && \
-    # chmod -R 755 /vol && \
-    # chmod -R +x /scripts
+    mkdir -p /static && \
+    mkdir -p /media && \
+    mkdir -p /vol && \
+    chown -R app:app /vol /media /static && \
+    chmod -R 755 /vol /media /static && \
     mkdir -p /app/staticfiles && \
     chown -R app:app /app && \
     chmod -R 755 /app && \
