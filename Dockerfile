@@ -60,7 +60,9 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/media && \
     chown -R app:app /vol && \
     chmod -R 755 /vol && \
-    chmod -R +x /scripts
+    chmod -R +x /scripts \
+    /py/bin/python manage.py collectstatic --noinput
+
 
 ENV PATH="/scripts:/py/bin:$PATH"
 
