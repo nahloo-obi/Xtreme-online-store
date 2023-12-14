@@ -8,8 +8,6 @@ set -e
 # mkdir -p /media
 # mkdir -p /vol
 
-# # Set correct permissions
-# chown -R app:app /app/staticfiles /static /media /vol
 
 python manage.py wait_for_db
 python manage.py collectstatic --noinput
