@@ -60,6 +60,8 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/media && \
     chown -R app:app /vol && \
     chmod -R 755 /vol && \
+    /py/bin/python manage.py migrate && \
+    /py/bin/python manage.py collectstatic --noinput && \
     chmod -R +x /scripts 
 
 
