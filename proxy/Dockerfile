@@ -17,7 +17,7 @@ RUN mkdir -p /home/app/staticfiles && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
     chmod +x /run.sh
 
-VOLUME /home/app/staticfiles
+#VOLUME /home/app/staticfiles
 
 
 
