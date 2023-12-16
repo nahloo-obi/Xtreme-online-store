@@ -2,7 +2,7 @@ server {
     listen ${LISTEN_PORT};
 
     location /static {
-        alias /vol/web/static;
+        alias /home/app/staticfiles/;
     }
 
     location / {

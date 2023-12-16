@@ -11,13 +11,13 @@ ENV APP_PORT=9000
 
 USER root
 
-RUN mkdir -p /vol/web/static && \
-    chmod 755 /vol/web/static && \
+RUN mkdir -p /home/app/staticfiles && \
+    chmod 755 /home/app/staticfiles && \
     touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
     chmod +x /run.sh
 
-VOLUME /vol/web/static
+VOLUME /home/app/staticfiles
 
 
 
