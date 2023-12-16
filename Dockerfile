@@ -56,10 +56,10 @@ RUN python -m venv /py && \
     /py/bin/pip install -r requirements.txt && \
     apk del .tmp-deps && \
     adduser --disabled-password --no-create-home app && \
-    # mkdir -p /vol/web/static && \
-    # mkdir -p /vol/web/media && \
-    # chown -R app:app /vol && \
-    # chmod -R 755 /vol && \
+    mkdir -p /vol/web/static && \
+    mkdir -p /vol/web/media && \
+    chown -R app:app /vol/web && \
+    chmod -R 755 /vol/web && \
     # /py/bin/python manage.py wait_for_db && \
     # /py/bin/python manage.py migrate && \
     # /py/bin/python manage.py collectstatic --noinput && \
