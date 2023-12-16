@@ -6,6 +6,7 @@ services:
       context: .
     restart: always
     volumes:
+      - .:/app
       - static-data:/app/staticfiles
     environment:
       - DB_HOST=db
