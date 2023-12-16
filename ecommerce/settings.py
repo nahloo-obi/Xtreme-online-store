@@ -96,7 +96,7 @@ DB_NAME = os.environ.get("DB_NAME")
 DB_USER = os.environ.get("DB_USER")
 DB_PASS = os.environ.get("DB_PASS")
 DB_HOST = os.environ.get("DB_HOST")
-#DB_PORT = config("DB_PORT")
+DB_PORT = os.environ.get("DB_PORT")
 
 DATABASES = {
     
@@ -106,7 +106,7 @@ DATABASES = {
         'USER': DB_USER,
         'PASSWORD': DB_PASS,
         'HOST': DB_HOST,
-        #'PORT': DB_PORT
+        'PORT': DB_PORT
     }
 }
 
@@ -163,7 +163,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = '/vol/web/media'
-STATIC_ROOT = '/vol/web/static'
+# STATIC_ROOT = '/vol/web/static'
+STATIC_ROOT= os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
