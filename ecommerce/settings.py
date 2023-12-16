@@ -96,7 +96,7 @@ DB_NAME = os.environ.get("DB_NAME")
 DB_USER = os.environ.get("DB_USER")
 DB_PASS = os.environ.get("DB_PASS")
 DB_HOST = os.environ.get("DB_HOST")
-#DB_PORT = config("DB_PORT")
+DB_PORT = os.environ.get("DB_PORT")
 
 DATABASES = {
     
@@ -106,7 +106,7 @@ DATABASES = {
         'USER': DB_USER,
         'PASSWORD': DB_PASS,
         'HOST': DB_HOST,
-        #'PORT': DB_PORT
+        'PORT': DB_PORT
     }
 }
 
