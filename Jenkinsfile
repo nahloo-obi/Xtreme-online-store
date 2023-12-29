@@ -56,7 +56,14 @@ pipeline {
 
                     // Build and push Docker image to Docker Hub
                     sh 'docker-compose build'
-                    sh 'docker-compose push'
+
+                    // Get the current directory name (Jenkins workspace or project name)
+                    def currentDirName = sh(script: 'basename $PWD', returnStdout: true).trim()
+
+                    // Tag Docker image with a version or tag (replace 'your-tag' with your desired tag)
+                    sh "docker tag ${currentDirName}_app:latest nahlooobi/xtremestoreapp:latest"
+
+                    sh 'docker push nahlooobi/xtremestoreapp:latest'
                 }
             }
         }
