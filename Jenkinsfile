@@ -22,11 +22,11 @@ pipeline {
                     def dbPassword = credentials('db-password-credentials-id').toString()
                     def dbName = credentials('db-name-credentials-id').toString()
                     def dbUser = credentials('db-user-credentials-id').toString()
-                    def dbPort = credentials('db-port-credentials-id').toString()
+                    def dbPort = credentials('db-port-credentials-id')
                     def secret_key = credentials('secret-key-id').toString()
                     def paypal_client_id = credentials('paypal-client-id').toString()
                     def allowed_hosts = credentials('allowed-hosts-id').toString()
-                    def debug = credentials('debug-id').toString()
+                    def debug = credentials('debug-id')
                     def dbhost = credentials('dbhost-id').toString()
 
 
