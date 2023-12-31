@@ -2,7 +2,7 @@ server {
     listen ${LISTEN_PORT};
 
     location /static {
-        alias /var/lib/jenkins/workspace/testttt/vol/static;
+        alias /vol/static;
     }
 
     location / {

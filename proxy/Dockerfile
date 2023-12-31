@@ -11,8 +11,10 @@ ENV APP_PORT=9000
 
 USER root
 
-RUN mkdir -p alias /var/lib/jenkins/workspace/testttt/vol/static && \
-    chmod 755 alias /var/lib/jenkins/workspace/testttt/vol/static && \
+RUN mkdir -p alias /vol/static && \
+    chmod 755 alias /vol/static && \
+    # mkdir -p alias /var/lib/jenkins/workspace/testttt/vol/static && \
+    # chmod 755 alias /var/lib/jenkins/workspace/testttt/vol/static && \
     touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
     chmod +x /run.sh
