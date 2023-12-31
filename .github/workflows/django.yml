@@ -1,20 +1,18 @@
-name: Django CI
+name: CICD Static Deployment
 
 on:
   push:
-    branches: [ "main" ]
-
+    branches:
+      - main
 jobs:
-  build:
-
+  deploy:   
     runs-on: ubuntu-latest
-
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.1
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        script: whoami
+      - name: Deploy Via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.IP_ADDRESS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            echo "Done"
