@@ -2,6 +2,16 @@
 
 set -e
 
+mkdir var
+cd var
+mkdir lib
+cd lib
+mkdir jenkins
+cd jenkins
+mkdir workspace
+cd workspace
+mkdir testttt
+cd testttt
 # cd /var/lib/jenkins/workspace/testttt
 
 python manage.py wait_for_db
