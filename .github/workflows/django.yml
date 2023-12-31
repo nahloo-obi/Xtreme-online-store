@@ -10,11 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@v1.0.1
       with:
