@@ -46,8 +46,10 @@ jobs:
       run: |
         IMAGE_TAG=$(echo $GITHUB_SHA | head -c 7)
         echo "hey"
-        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest .
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest
+        # docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest .
+        # docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest
+        docker build -t nahlooobi/xtremestoreapp:${{ github.sha }} .
+        docker tag nahlooobi/xtremestoreapp:${{ github.sha }} nahlooobi/xtremestoreapp:latest
 
     - name: Logout from Docker Hub
       run: docker logout
