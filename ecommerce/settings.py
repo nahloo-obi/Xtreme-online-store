@@ -28,8 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = os.environ.get("SECRET_KEY")
-SECRET_KEY = 'django-insecure-=u2znt7e8urz26^g!*uiz8+&$yrhkt!4bnkzlgi)x2&3@ul5x)'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 PAYPAL_CLIENT_ID= os.environ.get("PAYPAL_CLIENT_ID")
 
 # SECURITY WARNING: don't run with debug turned on in production!
