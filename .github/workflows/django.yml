@@ -48,6 +48,8 @@ jobs:
         echo "Current directory: $(pwd)"
         echo "directory: $(ls)"
         echo "entering templates: $(cd templates)"
+        echo "Current directory: $(pwd)"
+        echo "directory: $(ls)"
         echo "index: $(cat index.html)"
         docker build -t nahlooobi/xtremestoreapp:${{ github.sha }} .
         docker tag nahlooobi/xtremestoreapp:${{ github.sha }} nahlooobi/xtremestoreapp:latest
