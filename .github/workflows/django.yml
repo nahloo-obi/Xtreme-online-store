@@ -34,7 +34,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      run: git pull origin main
+      uses: actions/checkout@v2
 
     - name: Login to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
@@ -45,6 +45,7 @@ jobs:
         echo "hey"
         # docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest .
         # docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest
+        cd /home/ubuntu/Ecommerce
         docker build -t nahlooobi/xtremestoreapp:${{ github.sha }} .
         docker tag nahlooobi/xtremestoreapp:${{ github.sha }} nahlooobi/xtremestoreapp:latest
 
