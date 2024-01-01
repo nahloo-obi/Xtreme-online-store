@@ -36,9 +36,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up Docker
-      uses: actions/setup-docker@v2
-
     - name: Login to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
@@ -50,6 +47,10 @@ jobs:
         # docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest
         docker build -t nahlooobi/xtremestoreapp:${{ github.sha }} .
         docker tag nahlooobi/xtremestoreapp:${{ github.sha }} nahlooobi/xtremestoreapp:latest
+
+
+    - name: Push Docker Image
+      run: docker push nahlooobi/xtremestoreapp:latest
 
     - name: Logout from Docker Hub
       run: docker logout
