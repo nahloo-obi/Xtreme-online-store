@@ -22,6 +22,9 @@ RUN python -m venv /py && \
     mkdir -p /app/staticfiles && \
     chown -R app:app /app/staticfiles && \
     chmod -R 755 /app/staticfiles && \
+    mkdir -p /app/media && \
+    chown -R app:app /app/media && \
+    chmod -R 755 /app/media && \
     chmod -R +x /scripts 
 
 
