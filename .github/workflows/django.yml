@@ -90,6 +90,7 @@ jobs:
           script: |
             cd /home/ubuntu/Ecommerce
             docker-compose -f docker-compose.yml down
+            git pull origin main
             docker-compose -f docker-compose.yml up --build -d
 
 
