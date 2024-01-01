@@ -45,7 +45,7 @@ jobs:
         echo "hey"
         # docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest .
         # docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest
-        cd /home/ubuntu/Ecommerce
+        echo "Current directory: $(pwd)"
         docker build -t nahlooobi/xtremestoreapp:${{ github.sha }} .
         docker tag nahlooobi/xtremestoreapp:${{ github.sha }} nahlooobi/xtremestoreapp:latest
 
