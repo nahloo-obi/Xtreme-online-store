@@ -46,6 +46,7 @@ jobs:
         # docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest .
         # docker push ${{ secrets.DOCKER_HUB_USERNAME }}/xtremestoreapp:latest
         echo "Current directory: $(pwd)"
+        echo "directory: $(ls)"
         docker build -t nahlooobi/xtremestoreapp:${{ github.sha }} .
         docker tag nahlooobi/xtremestoreapp:${{ github.sha }} nahlooobi/xtremestoreapp:latest
 
