@@ -2,8 +2,7 @@ version: '3.9'
 
 services:
   app:
-    build:
-      context: .
+    image: nahlooobi/xtremestoreapp:latest
     restart: always
     volumes:
       - static-data:/vol/web
