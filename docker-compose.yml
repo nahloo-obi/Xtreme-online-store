@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   app:
-    image: nahlooobi/xtremestoreapp:latest
+    image: nahlooobi/xtremestoreapp:late
     restart: always
     volumes:
       - static-data:/vol/web
