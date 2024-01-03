@@ -21,12 +21,12 @@ class TestViews(TestCase):
     def test_index_GET(self):
         response = self.client.get(self.index_url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
 
     def test_shop_page_GET(self):
         response = self.client.get(self.index_url)
         print(self.product)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'shop.html')
