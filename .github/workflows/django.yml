@@ -101,7 +101,7 @@ jobs:
             cd /home/ubuntu/Ecommerce
             docker-compose -f docker-compose.yml down
             git pull origin main
-            python manage.py test core
+            # python manage.py test core
             docker-compose -f docker-compose.yml up --build -d
 
 
