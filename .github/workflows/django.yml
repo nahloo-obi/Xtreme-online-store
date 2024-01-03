@@ -6,6 +6,17 @@ on:
       - main
 
 jobs:
+  test:
+      runs-on: ubuntu-latest
+      
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Run tests
+        run: |
+          git pull origin main
+          python manage.py test core
   build:
     runs-on: ubuntu-latest
 
