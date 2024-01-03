@@ -32,6 +32,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 PAYPAL_CLIENT_ID= os.environ.get("PAYPAL_CLIENT_ID")
 
 
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 
@@ -99,7 +101,15 @@ DB_PASS = os.environ.get("DB_PASS")
 DB_HOST = os.environ.get("DB_HOST")
 DB_PORT = os.environ.get("DB_PORT")
 
-DATABASES = {
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
     
        'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -110,13 +120,6 @@ DATABASES = {
         'PORT': DB_PORT
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 
 # Password validation
