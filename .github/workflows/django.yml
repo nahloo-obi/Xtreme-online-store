@@ -102,7 +102,7 @@ jobs:
             docker-compose -f docker-compose.yml down
             docker image prune -a
             git pull origin main
-            # python manage.py test core
+            python manage.py test core
             docker-compose -f docker-compose.yml up --build -d
 
 
