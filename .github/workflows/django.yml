@@ -6,56 +6,49 @@ on:
       - main
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
-  #   services:
-  #     postgres:
-  #       image: postgres:latest
-  #       env:
-  #         POSTGRES_USER: admin
-  #         POSTGRES_PASSWORD: admin123
-  #         POSTGRES_DB: app
-  #       ports:
-  #         - 5432:5432
-  #       options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PAYPAL_CLIENT_ID: ${{ secrets.PAYPAL_CLIENT_ID }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY}}
+      DEBUG: 1
 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.13.0-alpha.2
 
-  #   - name: Set up Python
-  #     uses: actions/setup-python@v2
-  #     with:
-  #       python-version: 3.13.0-alpha.2
+    - name: Create virtual environment
+      run: python -m venv venv
 
-  #   - name: Create virtual environment
-  #     run: python -m venv venv
+    - name: Activate virtual environment
+      run: source venv/bin/activate
 
-  #   - name: Activate virtual environment
-  #     run: source venv/bin/activate
-
-  #   - name: Install dependencies
-  #     run: |
-  #       pip install Django
-  #       pip install django-countries
-  #       pip install django-crispy-forms
-  #       pip install django-environ
-  #       pip install django-etc
-  #       pip install django-filter
-  #       pip install django-hitcount
-  #       pip install django-multiselectfield
-  #       pip install django-taggit
-  #       pip install Pillow
-  #       pip install psycopg2-binary
-  #       pip install python-decouple
-  #       pip install sqlparse
-  #       pip install typing_extensions
-  #       pip install tzdata
+    - name: Install dependencies
+      run: |
+        pip install Django
+        pip install django-countries
+        pip install django-crispy-forms
+        pip install django-environ
+        pip install django-etc
+        pip install django-filter
+        pip install django-hitcount
+        pip install django-multiselectfield
+        pip install django-taggit
+        pip install Pillow
+        pip install psycopg2-binary
+        pip install python-decouple
+        pip install sqlparse
+        pip install typing_extensions
+        pip install tzdata
         
-  #   - name: Run tests
-  #     run: |
-  #       python manage.py test core
+    - name: Run tests
+      run: |
+        python manage.py test core
 
         
   build:
