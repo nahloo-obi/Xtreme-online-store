@@ -45,6 +45,7 @@ jobs:
         pip install sqlparse
         pip install typing_extensions
         pip install tzdata
+        pip install --upgrade setuptools
         
     - name: Run tests
       run: |
