@@ -6,4 +6,4 @@ class TestUrls(SimpleTestCase):
 
     def test_index_url_is_resolves(self):
         url = reverse('index')
-        self.assertEquals(resolve(url).func,index)
+        self.assertEqual(resolve(url).func,index)
