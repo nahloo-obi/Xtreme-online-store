@@ -79,7 +79,7 @@ def shopPage(request):
 
 def aboutPage(request):
     
-    return render(request, 'shop.html')
+    return render(request, 'about.html')
     
    
 def genderFilterPage(request, gender):
