@@ -5,6 +5,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name="index"), 
     path('shop-page', views.shopPage, name='shop-page'),
+    path('about-page', views.aboutPage, name='about-page'),
+
     path('gender-filter-page/<str:gender>', views.genderFilterPage, name='gender-filter-page'),
     
     path('product-page/<str:pk>', views.ProductDetailView.as_view(), name='product-page'),
