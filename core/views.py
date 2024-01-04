@@ -76,6 +76,10 @@ def shopPage(request):
     }
     
     return render(request, 'shop.html', context)
+
+def aboutPage(request):
+    
+    return render(request, 'shop.html')
     
    
 def genderFilterPage(request, gender):
