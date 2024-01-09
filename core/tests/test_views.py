@@ -26,7 +26,5 @@ class TestViews(TestCase):
 
     def test_shop_page_GET(self):
         response = self.client.get(self.index_url)
-        print(self.product)
 
         self.assertEqual(response.status_code, 200)
-        #self.assertTemplateUsed(response, 'shop.html')
